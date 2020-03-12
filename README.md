@@ -1,0 +1,40 @@
+# COMP 3008 - Part 1.3
+
+A Node.JS project which processes the log data from two password schemes from [this Password Scheme Demonstration](https://mvp.soft.carleton.ca/svp3008) from 2017.
+
+Text21 Log file: `text21.csv`
+
+Imagept21 Log file: `imagept21.csv`
+
+## Pseudocode
+
+To process the two log files, we're only paying attention to two events: logging in successfully i.e. `"login,success"`, and logging in unsuccessfully i.e. `"login,failed"`. From those events, we need to gather
+
+- The number of logins (successful, unsuccessful) per user
+- The average time it took to login (successfully, unsuccessfully) per user
+
+The first point is easier to do, since you just have to count how many times you see `"login,success"` and `"login,failed"` per user.
+
+For the second point, we need to know when they began entering their password to know how long it took. To achieve this, we needed to know the time of the previous `"enter,start"` event. Once we encountered the events from the first point, we compared the time of the `"login,x"` event with the time of the previous `"enter,start"` event.
+
+Once that data was collected, we output the findings in a csv where each row is all the data pertaining a single user.
+
+```javascript
+let users = {}
+
+for both csv files {
+  for row in file {
+    if the event is "enter,start" {
+      timeAtStart = currentTime
+    } else if the event is "login, failed" {
+      users[id].failedLogins++
+      users[id].failedLoginTime += (timeAtStart - currentTime)
+    } else if the event is "login, success" {
+      users[id].successLogins++
+      users[id].successLoginTime += (timeAtStart - currentTime)
+    }
+  }
+}
+
+// Then output the users object as a csv
+```
