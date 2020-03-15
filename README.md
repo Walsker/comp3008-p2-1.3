@@ -50,4 +50,6 @@ for both csv files {
 }
 
 // Then output the users object as a csv
+// While outputting, divide the # of logins (success,failed) but the login time (success,failed)
+//    to get the average login time (success,failed)
 ```
